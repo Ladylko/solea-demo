@@ -45,7 +45,7 @@ Percent arguments are whole numbers: `10` means 10 %.
 - `annualTotals(months, price, fixed)` returns `{ kwh, variable, fixed: 12 × fixed, total }`.
 - `monthsAboveThreshold(months, threshold)` returns the indexes strictly above.
 - `rankActions(actions, price, criterion)` with `ratio` (euros a year per euro of upfront cost, free actions with a saving first), `euros`, `cost`, `effort`. Returns enriched copies, does not mutate.
-- `normalizeKwh(value, unit)` for `Wh`, `kWh`, `MWh`. `homeMonthsKwh(home, key)` returns 12 kWh values or `null`.
+- `normalizeKwh(value, unit)` for `Wh`, `kWh`, `MWh`. The unit is required: a missing or unknown unit throws, never defaults to kWh. `homeMonthsKwh(home, key)` returns 12 kWh values or `null`.
 - `kwhPerM2(kwh, surface)`, `co2Estimate(kwh, factor)` (kg CO2e, demo factor), `priceScenario(kwh, price, pct, fixed) = kwh × price × (1 + pct ÷ 100) + fixed`, `goalKwh(kwh, pct)` = kWh to avoid, `paybackYears(cost, eurosPerYear)` (0 when free, `null` when nothing saved), `peakIndex(values)`, `setpointSavings(usageKwh, degrees, pctPerDegree, price)` (capped at 100 % of the usage), `planSummary(rankedActions, chosenIds)`.
 - Helpers also tested: `actionEurosPerYear`, `goalCoverage`, `changeRatio`, `monthBreakdown`, `combinedScenario`, `monthsToCsv`.
 

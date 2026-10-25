@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix: `normalizeKwh` no longer assumes kWh when the unit is missing or unknown; it throws. A series stored in Wh read without its unit showed Javier at 4,600,000 kWh and 828,240 € a year.
+
 ## 0.1.0 (2026-10-25)
 
 First prototype.

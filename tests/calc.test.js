@@ -215,6 +215,19 @@ test('homeMonthsKwh converts each unit and returns null for a missing series', (
   assert.equal(homeMonthsKwh(javier, 'solarExport'), null);
 });
 
+// Bug report: Javier's apartment in Málaga showed 4,600,000 kWh and 828,240 € a year.
+// His series is stored in Wh; read without its unit, it was silently taken as kWh.
+test('a series without a known unit is rejected, never read as kWh', () => {
+  const javier = HOMES.find((h) => h.id === 'javier');
+  const { unit, ...javierWithoutUnit } = javier;
+  assert.equal(unit, 'Wh');
+  assert.throws(() => homeMonthsKwh(javierWithoutUnit, 'thisYear'), /unit/);
+  assert.throws(() => homeMonthsKwh({ ...javier, unit: 'wh' }, 'thisYear'), /unit/);
+  assert.throws(() => normalizeKwh(310000), /unit/);
+  assert.throws(() => normalizeKwh(310000, undefined), /unit/);
+  assert.throws(() => normalizeKwh(1, 'toString'), /unit/);
+});
+
 test('each daily profile sums to 1 and has 24 hours', () => {
   HOMES.forEach((h) => {
     assert.equal(h.dayProfile.length, 24, h.id);

@@ -10,11 +10,12 @@ const round = (value, digits = 6) => {
 
 const sum = (values) => values.reduce((total, v) => total + v, 0);
 
-// Converts a value expressed in Wh, kWh or MWh to kWh.
-export function normalizeKwh(value, unit = 'kWh') {
-  const factor = UNIT_FACTORS[unit];
-  if (factor === undefined) throw new Error(`Unknown energy unit: ${unit}`);
-  return round(Number(value) * factor);
+// Converts a value expressed in Wh, kWh or MWh to kWh. The unit is required:
+// a missing or unknown unit throws instead of being assumed to be kWh, which
+// would silently turn Wh into kWh (a factor of 1,000).
+export function normalizeKwh(value, unit) {
+  if (!Object.hasOwn(UNIT_FACTORS, unit)) throw new Error(`Unknown or missing energy unit: ${unit}`);
+  return round(Number(value) * UNIT_FACTORS[unit]);
 }
 
 // The only way the interface reads a monthly series. Returns 12 values in kWh,
